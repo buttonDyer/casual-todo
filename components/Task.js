@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
 import styled from 'styled-components/native'
 
 const TaskWrapper = styled.View`
@@ -10,6 +12,8 @@ const TaskWrapper = styled.View`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20;
+  border-width: 1;
+  border-color: hsla(0, 0%, 75%, 0.5);
 `
 
 const LeftPart = styled.View`
@@ -18,10 +22,11 @@ const LeftPart = styled.View`
   flex-wrap: wrap;
 `
 
-const Checkbox = styled.TouchableOpacity`
+const DeleteButton = styled.TouchableOpacity`
+justify-content: center;
+align-items: center
   width: 24;
   height: 24;
-  background-color: hsla(202, 90%, 65%, 0.4);
   border-radius: 5;
   margin-right: 15;
 `
@@ -42,7 +47,9 @@ const Task = (props) => {
   return (
     <TaskWrapper>
       <LeftPart>
-        <Checkbox></Checkbox>
+        <DeleteButton onPress={() => props.completeTask(props.id)}>
+          <Icon name="delete" size={25} color="#000" />
+        </DeleteButton>
         <TaskText>{props.text}</TaskText>
       </LeftPart>
       <Indicator></Indicator>
