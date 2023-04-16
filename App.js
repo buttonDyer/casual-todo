@@ -1,39 +1,32 @@
 import { React, useState } from 'react'
-
 import { StatusBar } from 'expo-status-bar'
-
-import { Keyboard, Platform, TouchableOpacity } from 'react-native'
-
+import { Keyboard, TouchableOpacity, FlatList } from 'react-native'
 import Task from './components/Task'
-
 import styled from 'styled-components/native'
 
-const Container = styled.ScrollView`
+const Container = styled.View`
   flex: 1;
   background-color: hsla(216, 12%, 92%, 1);
-`
-
-const TasksWrapper = styled.View`
-  padding-top: 80;
   padding-horizontal: 20;
+  padding-bottom: 80px;
 `
 
 const Title = styled.Text`
   font-size: 24;
   font-weight: bold;
+  padding-top: 70;
+  padding-bottom: 30px;
 `
 
-const List = styled.View`
-  margin-top: 30;
-`
-
-const InputWrapper = styled.KeyboardAvoidingView`
+const InputWrapper = styled.View`
   position: absolute;
-  bottom: 60;
-  width: 100%;
+  bottom: 0;
+  width: 110%;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  padding-vertical: 20px;
+  background-color: hsla(216, 12%, 92%, 1);
 `
 
 const Input = styled.TextInput`
@@ -76,39 +69,35 @@ const App = () => {
   }
 
   return (
-    <>
-      <Container>
-        <StatusBar />
-        <TasksWrapper>
-          <Title>Today's tasks</Title>
-          <List>
-            {taskList.map((item, id) => {
-              return (
-                <Task
-                  key={id}
-                  id={id}
-                  text={item}
-                  completeTask={completeTask}
-                />
-              )
-            })}
-          </List>
-        </TasksWrapper>
-      </Container>
-      <InputWrapper behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <Container>
+      <StatusBar />
+      <Title>Today's tasks</Title>
+      <FlatList
+        data={taskList}
+        renderItem={({ item, index }) => (
+          <Task
+            key={index}
+            id={index}
+            text={item}
+            completeTask={completeTask}
+          />
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+      />
+      <InputWrapper>
         <Input
           onChangeText={(text) => setTask(text)}
           value={task}
           placeholder={'Write a task'}
         />
-
         <TouchableOpacity onPress={() => handleAddTask()}>
           <AddButton>
             <AddValue>+</AddValue>
           </AddButton>
         </TouchableOpacity>
       </InputWrapper>
-    </>
+    </Container>
   )
 }
 

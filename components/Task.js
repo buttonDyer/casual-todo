@@ -23,8 +23,8 @@ const LeftPart = styled.View`
 `
 
 const DeleteButton = styled.TouchableOpacity`
-justify-content: center;
-align-items: center
+  justify-content: center;
+  align-items: center
   width: 24;
   height: 24;
   border-radius: 5;
@@ -38,12 +38,21 @@ const TaskText = styled.Text`
 const Indicator = styled.View`
   width: 12;
   height: 12;
-  border-color: hsla(202, 90%, 65%, 0.4);
-  border-width: 2;
   border-radius: 5;
 `
 
 const Task = (props) => {
+  const now = new Date()
+  const createdAt = new Date(props.createdAt)
+  const hoursDiff = Math.floor((now - createdAt) / (1000 * 60 * 60))
+
+  let indicatorColor = 'green'
+  if (hoursDiff >= 24) {
+    indicatorColor = 'red'
+  } else if (hoursDiff >= 5) {
+    indicatorColor = 'orange'
+  }
+
   return (
     <TaskWrapper>
       <LeftPart>
@@ -52,7 +61,7 @@ const Task = (props) => {
         </DeleteButton>
         <TaskText>{props.text}</TaskText>
       </LeftPart>
-      <Indicator></Indicator>
+      <Indicator style={{ backgroundColor: indicatorColor }}></Indicator>
     </TaskWrapper>
   )
 }
